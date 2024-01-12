@@ -34,29 +34,7 @@ refDieCoordinate=[]
 for i in range(2):
     refDieCoordinate.append(refCenter[i]-(dieSize[i]/2))
 
-angle=0
 radius=diameter/2
-space=dieSize[0]
-
-endy = dieShiftVector[1] - round(radius * math.sin(math.radians(angle)),4)
-endx = dieShiftVector[0] - round(radius * math.cos(math.radians(angle)),4)
-
-xaxis=[]
-while endx>=-radius and endx<=radius:
-    xaxis.append([endx,endy])
-    endy = round(endy + space * math.sin(math.radians(angle)),4)
-    endx = round(endx + space * math.cos(math.radians(angle)),4)
-
-yaxis=[]
-for i in xaxis:
-    yaxis.append([i[1],i[0]])
-    
-n=(math.pi*(radius**2)) / (dieSize[0]**2) 
-print(n)
-
-output=[]
-for i in xaxis:
-    output.append([i[0]-refDieCoordinate[0],i[1]-refDieCoordinate[1]])
 
 outstr=""
 dic={(0,0):0}

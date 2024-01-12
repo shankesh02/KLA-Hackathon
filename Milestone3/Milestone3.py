@@ -34,36 +34,26 @@ for i in range(2):
 refDieCoordinate=[]
 for i in range(2):
     refDieCoordinate.append(refCenter[i]-(dieSize[i]/2))
-
-
-
-angle=0
-radius=diameter/2
-space=dieSize[0]
-
-endy = dieShiftVector[1] - round(radius * math.sin(math.radians(angle)),4)
-endx = dieShiftVector[0] - round(radius * math.cos(math.radians(angle)),4)
-
-xaxis=[]
-while endx>=-radius and endx<=radius:
-    xaxis.append([endx,endy])
-    endy = round(endy + space * math.sin(math.radians(angle)),4)
-    endx = round(endx + space * math.cos(math.radians(angle)),4)
-
-yaxis=[]
-for i in xaxis:
-    yaxis.append([i[1],i[0]])
     
-n=(math.pi*(radius**2)) / (dieSize[0]**2) 
-print(n)
+dieStreet=[]
+for i in values[4]:
+    dieStreet.append(int(i))
 
-output=[]
-for i in xaxis:
-    output.append([i[0]-refDieCoordinate[0],i[1]-refDieCoordinate[1]])
+reticleStreet=[]
+for i in values[5]:
+    reticleStreet.append(int(i))
+    
+diesPerReticle=[]
+for i in values[6]:
+    diesPerReticle.append(int(i))
+
+radius=diameter/2
 
 outstr=""
 dic={(0,0):0}
-def dfs(x,y,i,j):
+flag1=0
+flag2=0
+def dfs(x,y,i,j,flag1,flag2):
     global outstr
     
     left=math.dist([0,0], [x,y])
@@ -71,25 +61,35 @@ def dfs(x,y,i,j):
     top=math.dist([0,0],[x,y+dieSize[1]])
     bottom=math.dist([0,0], [x+dieSize[0],y+dieSize[1]])
     
+    flag1=flag1+1
+    flag2=flag2+1
     
     if dic.get((i,j),0)==1:
         return
     if left<radius or right<radius or top<radius or bottom<radius:
         print("(",i,",",j,"):(",x,y,")")
         outstr+="("+str(i)+","+str(j)+"):("+str(x)+","+str(y)+")\n"
+        
         dic[(i,j)]=1
-        dfs(x+dieSize[0],y,i+1,j)
-        dfs(x-dieSize[0],y,i-1,j)
-        dfs(x,y+dieSize[1],i,j+1)
-        dfs(x,y-dieSize[1],i,j-1)
+        if flag1%diesPerReticle[0]==0:
+            dfs(x+dieSize[0]+dieStreet[0]+reticleStreet[0],y,i+1,j,flag1,flag2)
+            dfs(x-dieSize[0]-dieStreet[0],y,i-1,j,flag1,flag2)
+        else:
+            dfs(x+dieSize[0]+dieStreet[0],y,i+1,j,flag1,flag2)
+            dfs(x-dieSize[0]-dieStreet[0]-reticleStreet[0],y,i-1,j,flag1,flag2)
+            
+        if flag2%diesPerReticle[1]==0:
+            dfs(x,y+dieSize[1]+dieStreet[1]+reticleStreet[1],i,j+1,flag1,flag2)
+            dfs(x,y-dieSize[1]-dieStreet[1],i,j-1,flag1,flag2)
+        else:
+            dfs(x,y+dieSize[1]+dieStreet[1],i,j+1,flag1,flag2)
+            dfs(x,y-dieSize[1]-dieStreet[1]-reticleStreet[1],i,j-1,flag1,flag2)
+        
     else:
         return
 
-dfs(refDieCoordinate[0],refDieCoordinate[1],0,0)
-    
+dfs(refDieCoordinate[0],refDieCoordinate[1],0,0,flag1,flag2)
 
 writeObject=open(r"D:\KLA Hackathon\Milestone3\Output\Testcase1.txt","w")
-
-
 writeObject.write(outstr)
 writeObject.close()
