@@ -1,6 +1,6 @@
 import math
 
-readObject = open(r"D:\KLA Hackathon\Milestone2\Input\Testcase3.txt","r")
+readObject = open(r"D:\KLA Hackathon\Milestone3\Input\Testcase1.txt","r")
 inp=readObject.read()
 
 inp=inp.split("\n")
@@ -10,8 +10,9 @@ for i in inp:
     values.append(i.split(":")[1])
 
 values[1]=values[1].split("x")
-for i in range(2,len(values)):
+for i in range(2,len(values)-1):
     values[i]=values[i][1:len(values[i])-1].split(",")
+values[len(values)-1]=values[len(values)-1].split("x")
 
 diameter = int(values[0])
 dieSize=[]
@@ -33,6 +34,8 @@ for i in range(2):
 refDieCoordinate=[]
 for i in range(2):
     refDieCoordinate.append(refCenter[i]-(dieSize[i]/2))
+
+
 
 angle=0
 radius=diameter/2
@@ -85,7 +88,7 @@ def dfs(x,y,i,j):
 dfs(refDieCoordinate[0],refDieCoordinate[1],0,0)
     
 
-writeObject=open(r"D:\KLA Hackathon\Milestone2\Output\Testcase3.txt","w")
+writeObject=open(r"D:\KLA Hackathon\Milestone3\Output\Testcase1.txt","w")
 
 
 writeObject.write(outstr)
