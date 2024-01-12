@@ -1,6 +1,6 @@
 import math
 
-readObject = open(r"D:\KLA Hackathon\Milestone2\Input\Testcase3.txt","r")
+readObject = open(r"D:\KLA Hackathon\Milestone2\Input\Testcase4.txt","r")
 inp=readObject.read()
 
 inp=inp.split("\n")
@@ -62,22 +62,30 @@ outstr=""
 dic={(0,0):0}
 def dfs(x,y,i,j):
     global outstr
-    if x<-radius or y<-radius or x>radius or y>radius:
-        return
+    
+    left=math.dist([0,0], [x,y])
+    right=math.dist([0,0], [x+dieSize[0],y])
+    top=math.dist([0,0],[x,y+dieSize[1]])
+    bottom=math.dist([0,0], [x+dieSize[0],y+dieSize[1]])
+    
+    
     if dic.get((i,j),0)==1:
         return
-    print("(",i,",",j,"):(",x,y,")")
-    outstr+="("+str(i)+","+str(j)+"):("+str(x)+","+str(y)+")\n"
-    dic[(i,j)]=1
-    dfs(x+dieSize[0],y,i+1,j)
-    dfs(x-dieSize[0],y,i-1,j)
-    dfs(x,y+dieSize[1],i,j+1)
-    dfs(x,y-dieSize[1],i,j-1)
+    if left<radius or right<radius or top<radius or bottom<radius:
+        print("(",i,",",j,"):(",x,y,")")
+        outstr+="("+str(i)+","+str(j)+"):("+str(x)+","+str(y)+")\n"
+        dic[(i,j)]=1
+        dfs(x+dieSize[0],y,i+1,j)
+        dfs(x-dieSize[0],y,i-1,j)
+        dfs(x,y+dieSize[1],i,j+1)
+        dfs(x,y-dieSize[1],i,j-1)
+    else:
+        return
 
 dfs(refDieCoordinate[0],refDieCoordinate[1],0,0)
     
 
-writeObject=open(r"D:\KLA Hackathon\Milestone2\Output\Testcase3.txt","w")
+writeObject=open(r"D:\KLA Hackathon\Milestone2\Output\Testcase4.txt","w")
 
 
 writeObject.write(outstr)
