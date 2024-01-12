@@ -52,7 +52,7 @@ radius=diameter/2
 outstr=""
 dic={(0,0):0}
 flag1=0
-flag2=0
+flag2=1
 def dfs(x,y,i,j,flag1,flag2):
     global outstr
     
